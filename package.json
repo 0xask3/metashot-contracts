@@ -1,0 +1,40 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "truffle migrate --compile-none --network",
+    "compile": "truffle compile --all",
+    "verify": "truffle run verify"
+  },
+  "author": "Grim",
+  "license": "ISC",
+  "dependencies": {
+    "@chainlink/contracts": "^0.4.1",
+    "@openzeppelin/contracts": "^4.7.3",
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "@truffle/hdwallet-provider": "^2.0.14",
+    "erc721a": "^4.2.2",
+    "erc721a-upgradeable": "^4.2.2",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.1",
+    "git-cz": "^4.9.0",
+    "solhint": "^3.3.7",
+    "truffle-plugin-verify": "^0.5.28"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.7.3",
+    "@openzeppelin/truffle-upgrades": "^1.16.0",
+    "cz-conventional-changelog": "3.3.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/git-cz"
+    }
+  }
+}
