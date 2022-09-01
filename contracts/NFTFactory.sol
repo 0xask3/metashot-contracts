@@ -17,7 +17,7 @@ import "./TemplateNFT.sol";
  * 3. https://docs.openzeppelin.com/contracts/4.x/api/proxy
  */
 
-contract MetaverseNFTFactory is Ownable {
+contract NFTFactory is Ownable {
     address public immutable proxyImplementation;
     IERC721AUpgradeable public earlyAccessPass;
     uint256 public maxAllowedAmount = 50 ether; // launch for free if your collection collects less than this amount
@@ -48,7 +48,7 @@ contract MetaverseNFTFactory is Ownable {
         require(
             address(earlyAccessPass) == address(0) ||
                 earlyAccessPass.balanceOf(msg.sender) > 0,
-            "MetaverseNFTFactory: Early Access Pass is required"
+            "NFTFactory: Early Access Pass is required"
         );
         _;
     }
@@ -56,7 +56,7 @@ contract MetaverseNFTFactory is Ownable {
     modifier checkTotalAmount(uint256 amount) {
         require(
             amount < maxAllowedAmount,
-            "MetaverseNFTFactory: Collection total amount is too high"
+            "NFTFactory: Collection total amount is too high"
         );
         _;
     }
@@ -111,7 +111,7 @@ contract MetaverseNFTFactory is Ownable {
     ) external hasAccess(msg.sender) {
         require(
             _maxTokensPerMint <= maxPerMintLimit,
-            "MetaverseNFTFactory: Overflowed max tokens per mint"
+            "NFTFactory: Overflowed max tokens per mint"
         );
         address clone = Clones.clone(proxyImplementation);
 
@@ -159,7 +159,7 @@ contract MetaverseNFTFactory is Ownable {
     ) external hasAccess(msg.sender) {
         require(
             _maxTokensPerMint <= maxPerMintLimit,
-            "MetaverseNFTFactory: Overflowed max tokens per mint"
+            "NFTFactory: Overflowed max tokens per mint"
         );
         address clone = Clones.clone(proxyImplementation);
 
@@ -230,7 +230,7 @@ contract MetaverseNFTFactory is Ownable {
     ) external checkTotalAmount(_startPrice * _maxSupply) {
         require(
             _maxTokensPerMint <= maxPerMintLimit,
-            "MetaverseNFTFactory: Overflowed max tokens per mint"
+            "NFTFactory: Overflowed max tokens per mint"
         );
         address clone = Clones.clone(proxyImplementation);
 
