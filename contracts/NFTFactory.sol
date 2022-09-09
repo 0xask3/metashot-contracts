@@ -183,7 +183,7 @@ contract NFTFactory is Ownable {
         );
 
         if (shouldUseJSONExtension) {
-            TemplateNFT(payable(clone)).setPostfixURI(".json");
+            TemplateNFT(payable(clone)).setExtension(".json");
         }
 
         if (miscParams & SHOULD_START_SALE != 0) {
@@ -254,7 +254,7 @@ contract NFTFactory is Ownable {
         );
 
         if (shouldUseJSONExtension) {
-            TemplateNFT(payable(clone)).setPostfixURI(".json");
+            TemplateNFT(payable(clone)).setExtension(".json");
         }
 
         if (miscParams & SHOULD_START_SALE != 0) {

@@ -21,7 +21,6 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeab
 import "./interfaces/ITemplateNFT.sol";
 import "./utils/OpenseaProxy.sol";
 
-
 contract TemplateNFT is
     ERC721AUpgradeable,
     ReentrancyGuardUpgradeable,
@@ -33,11 +32,9 @@ contract TemplateNFT is
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _tokenIndexCounter; // token index counter
-
-    uint256 private constant SALE_STARTS_AT_INFINITY = 2**256 - 1;
     uint256 public constant MAX_PER_MINT_LIMIT = 50; // based on ERC721A limitations
 
-    uint256 public startTimestamp = SALE_STARTS_AT_INFINITY;
+    uint256 public startTimestamp;
 
     uint256 public reserved;
     uint256 public maxSupply;
@@ -47,12 +44,16 @@ contract TemplateNFT is
 
     uint256 public royaltyFee;
 
-    
     address public payoutReceiver;
 
     bool public isPayoutChangeLocked;
     bool private isOpenSeaProxyActive;
     bool private startAtOne;
+
+    /**
+     * @dev Additional uri details of a particular token
+     */
+    mapping(uint256 => string) private URI_POSTFIX;
 
     /**
      * @dev Additional data for each token that needs to be stored and accessed on-chain
@@ -71,12 +72,8 @@ contract TemplateNFT is
 
     string public PROVENANCE_HASH = "";
     string private CONTRACT_URI = "";
-    string private BASE_URI;
-    string private URI_POSTFIX = "";
-
-    event ExtensionAdded(address indexed extensionAddress);
-    event ExtensionRevoked(address indexed extensionAddress);
-    event ExtensionURIAdded(address indexed extensionAddress);
+    string private BASE_URI = "";
+    string private EXTENSION = "";
 
     function initialize(
         uint256 _price,
@@ -84,12 +81,12 @@ contract TemplateNFT is
         uint256 _nReserved,
         uint256 _maxPerMint,
         uint256 _royaltyFee,
-        string memory _uri,
         string memory _name,
         string memory _symbol,
+        string memory _uri,
         bool _startAtOne
     ) public initializerERC721A initializer {
-        startTimestamp = SALE_STARTS_AT_INFINITY;
+        startTimestamp = block.timestamp + 60;
 
         price = _price;
         reserved = _nReserved;
@@ -99,12 +96,11 @@ contract TemplateNFT is
 
         royaltyFee = _royaltyFee;
 
+        BASE_URI = _uri;
+
         isOpenSeaProxyActive = true;
 
         startAtOne = _startAtOne;
-
-        // Need help with uploading metadata? Try https://buildship.xyz
-        BASE_URI = _uri;
 
         __ERC721A_init(_name, _symbol);
         __ReentrancyGuard_init();
@@ -137,9 +133,11 @@ contract TemplateNFT is
         override
         returns (string memory)
     {
-        if (bytes(URI_POSTFIX).length > 0) {
+        if (bytes(URI_POSTFIX[tokenId]).length > 0) {
             return
-                string(abi.encodePacked(super.tokenURI(tokenId), URI_POSTFIX));
+                string(
+                    abi.encodePacked(BASE_URI, URI_POSTFIX[tokenId], EXTENSION)
+                );
         } else {
             return super.tokenURI(tokenId);
         }
@@ -155,13 +153,20 @@ contract TemplateNFT is
         BASE_URI = uri;
     }
 
+    function setExtension(string calldata _extension) public onlyOwner {
+        EXTENSION = _extension;
+    }
+
     // Contract-level metadata for Opensea
     function setContractURI(string calldata uri) public onlyOwner {
         CONTRACT_URI = uri;
     }
 
-    function setPostfixURI(string calldata postfix) public onlyOwner {
-        URI_POSTFIX = postfix;
+    function setPostfixURI(uint256 _tokenId, string calldata postfix)
+        public
+        onlyOwner
+    {
+        URI_POSTFIX[_tokenId] = postfix;
     }
 
     function setPrice(uint256 _price) public onlyOwner {
@@ -244,13 +249,19 @@ contract TemplateNFT is
 
     // ---- Mint public ----
 
-    // Contract can sell tokens
-    function mint(uint256 nTokens)
+    function mintSingle(string calldata uri)
         external
         payable
         nonReentrant
         whenSaleStarted
-    {
+    {   
+        uint256 currentId = totalSupply();
+        URI_POSTFIX[currentId] = uri;
+        mint(1);
+    }
+
+    // Contract can sell tokens
+    function mint(uint256 nTokens) internal {
         // setting it to 0 means no limit
         if (maxPerWallet > 0) {
             require(
@@ -316,7 +327,7 @@ contract TemplateNFT is
     }
 
     function stopSale() public onlyOwner {
-        startTimestamp = SALE_STARTS_AT_INFINITY;
+        startTimestamp = type(uint256).max;
     }
 
     function saleStarted() public view returns (bool) {
@@ -334,7 +345,10 @@ contract TemplateNFT is
         royaltyFee = _royaltyFee;
     }
 
-    function setRoyaltyReceiver(uint256 _tokenId, address _receiver) public onlyOwner {
+    function setRoyaltyReceiver(uint256 _tokenId, address _receiver)
+        public
+        onlyOwner
+    {
         royaltyReceiver[_tokenId] = _receiver;
     }
 
