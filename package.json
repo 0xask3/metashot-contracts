@@ -15,21 +15,21 @@
   "author": "Grim",
   "license": "ISC",
   "dependencies": {
-    "@chainlink/contracts": "^0.4.1",
+    "@chainlink/contracts": "^0.5.1",
     "@openzeppelin/contracts": "^4.7.3",
-    "@openzeppelin/test-helpers": "^0.5.15",
-    "@truffle/hdwallet-provider": "^2.0.14",
-    "erc721a": "^4.2.2",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "@truffle/hdwallet-provider": "^2.1.0",
+    "erc721a": "^4.2.3",
     "erc721a-upgradeable": "^4.2.2",
     "chai": "^4.3.6",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.3",
     "git-cz": "^4.9.0",
     "solhint": "^3.3.7",
-    "truffle-plugin-verify": "^0.5.28"
+    "truffle-plugin-verify": "^0.5.31"
   },
   "devDependencies": {
     "@openzeppelin/contracts-upgradeable": "^4.7.3",
-    "@openzeppelin/truffle-upgrades": "^1.16.0",
+    "@openzeppelin/truffle-upgrades": "^1.17.0",
     "cz-conventional-changelog": "3.3.0"
   },
   "config": {

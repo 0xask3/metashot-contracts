@@ -476,10 +476,10 @@ contract Marketplace is
                 order.orderType == OrderType.Auction,
                 "Not an auction order"
             );
-            require(
-                order.expiresAt <= block.timestamp,
-                "Can't finish before bidding time"
-            );
+            // require(
+            //     order.expiresAt <= block.timestamp,
+            //     "Can't finish before bidding time"
+            // );
 
             uint256 numBids = order.numBids;
             Bid storage lastBid = bids[orderId[i]][numBids];

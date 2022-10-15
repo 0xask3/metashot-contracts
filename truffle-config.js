@@ -13,7 +13,6 @@ module.exports = {
       network_id: 3,
       timeoutBlocks: 5000000, // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
-      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
     kovan: {
       provider: () =>
@@ -31,6 +30,7 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(process.env.MNEMONIC, process.env.GOERLI),
       network_id: 5, // eslint-disable-line camelcase
+      skipDryRun: true
     },
     bsctestnet: {
       provider: () =>
