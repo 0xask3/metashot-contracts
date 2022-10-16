@@ -4,7 +4,7 @@ pragma solidity ^0.8.15;
 import "@openzeppelin/contracts/proxy/Clones.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import "./TemplateNFT.sol";
+import "./utils/TemplateNFT.sol";
 
 /**
  * TemplateNFT is a cloneable contract for your NFT collection.

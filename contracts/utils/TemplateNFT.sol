@@ -18,8 +18,8 @@ import "@openzeppelin/contracts-upgradeable/interfaces/IERC2981Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 
-import "./interfaces/ITemplateNFT.sol";
-import "./utils/OpenseaProxy.sol";
+import "../interfaces/ITemplateNFT.sol";
+import "./OpenseaProxy.sol";
 
 contract TemplateNFT is
     ERC721AUpgradeable,

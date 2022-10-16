@@ -98,7 +98,7 @@ contract Marketplace is
         uint256 itemId;
         /** Item Amount */
         uint256 itemAmount;
-        /** Base price in ACDM tokens. */
+        /** Base price in  tokens. */
         uint256 basePrice;
         /** Listing timestamp. */
         uint256 listedAt;
@@ -108,7 +108,7 @@ contract Marketplace is
         uint256 endTime;
         /** Number of bids, always points to last (i.e. highest) bid. */
         uint256 numBids;
-        /** Bid step in ACDM tokens. */
+        /** Bid step in  tokens. */
         uint256 bidStep;
         /** Maker address. */
         address maker;
@@ -120,7 +120,7 @@ contract Marketplace is
 
     /** Bid struct. */
     struct Bid {
-        /** Bid amount in ACDM tokens. */
+        /** Bid amount in  tokens. */
         uint256 amount;
         /** Bidder address. */
         address bidder;
@@ -367,7 +367,7 @@ contract Marketplace is
         );
         require(msg.sender != order.maker, "Can't buy from yourself");
 
-        // Transfer NFT to `msg.sender` and ACDM to order maker
+        // Transfer NFT to `msg.sender` and  to order maker
         _exchange(
             orderId,
             order.itemContract,
@@ -387,7 +387,7 @@ contract Marketplace is
      * - `bidAmount` must be higher than the last bid + bid step.
      *
      * @param orderId Order ID.
-     * @param bidAmount Amount in ACDM tokens.
+     * @param bidAmount Amount in  tokens.
      */
     function makeBid(uint256 orderId, uint256 bidAmount)
         external
@@ -495,7 +495,7 @@ contract Marketplace is
                 );
                 _cancelOrder(orderId[i], true);
             } else {
-                // Return ACDM to the last bidder
+                // Return  to the last bidder
                 if (numBids > 0) {
                     if (order.token == address(0)) {
                         payable(lastBid.bidder).transfer(lastBid.amount);
